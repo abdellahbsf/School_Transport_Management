@@ -1,28 +1,53 @@
-<div class="registration-form">
-  <h2>Register</h2>
-  <form (ngSubmit)="register()">
-    <mat-form-field>
-      <mat-label>Username</mat-label>
-      <input matInput [(ngModel)]="username" name="username" required>
+<div class="register-container">
+  <div class="register-form">
+    <h1>Register for School Transport</h1>
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="registerForm.name" required />
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
-      <input matInput [(ngModel)]="email" name="email" required>
+      <input matInput type="email" [(ngModel)]="registerForm.email" required />
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Phone Number</mat-label>
+      <input matInput type="tel" [(ngModel)]="registerForm.phone" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Username</mat-label>
+      <input matInput [(ngModel)]="registerForm.username" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
-      <input type="password" matInput [(ngModel)]="password" name="password" required>
+      <input matInput type="password" [(ngModel)]="registerForm.password" required />
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="fill">
       <mat-label>Confirm Password</mat-label>
-      <input type="password" matInput [(ngModel)]="confirmPassword" name="confirmPassword" required>
+      <input matInput type="password" [(ngModel)]="registerForm.confirmPassword" required />
     </mat-form-field>
 
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    <mat-form-field appearance="fill">
+      <mat-label>Pickup Location</mat-label>
+      <input matInput type="text" [(ngModel)]="registerForm.pickupLocation" required />
+    </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Register</button>
-  </form>
+    <button mat-raised-button color="primary" (click)="register()">Register</button>
+
+    <div class="login-link">
+      <p>Already have an account?
+        <a>
+          <span (click)="goTologin()">Create one here</span>
+        </a>
+      </p>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </div>
 </div>

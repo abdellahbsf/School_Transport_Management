@@ -1,18 +1,31 @@
-<div class="login-form">
-  <h2>Login</h2>
-  <form (ngSubmit)="login()">
-    <mat-form-field>
-      <mat-label>Username</mat-label>
-      <input matInput [(ngModel)]="username" name="username" required>
-    </mat-form-field>
+<div class="page-container">
+  <!-- Background and Login Form -->
+  <div class="login-container">
+    <!-- Login Form -->
+    <form (ngSubmit)="login()" class="login-form">
+      <h1>Login to School Transport</h1>
+      <mat-form-field appearance="fill">
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="username" name="username" required>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Password</mat-label>
-      <input type="password" matInput [(ngModel)]="password" name="password" required>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="password" name="password" type="password" required>
+      </mat-form-field>
 
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!username || !password">Login</button>
 
-    <button mat-raised-button color="primary" type="submit">Login</button>
-  </form>
+      <div class="error-message" *ngIf="errorMessage">
+        <p>{{ errorMessage }}</p>
+      </div>
+
+      <p class="registration-link">
+        Don't have an account? 
+        <a>
+          <span (click)="goToRegister()">Create one here</span>
+        </a>
+      </p>
+    </form>
+  </div>
 </div>
