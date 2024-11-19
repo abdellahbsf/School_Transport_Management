@@ -18,6 +18,9 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username; // Unique username for login
 
+    @Column(nullable = false, unique = true)
+    private String email; // Unique username for login
+
     @Column(nullable = false)
     private String password; // Hashed password for security
 
