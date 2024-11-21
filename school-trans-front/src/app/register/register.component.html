@@ -1,43 +1,56 @@
 <div class="register-container">
+  <!-- Map container -->
+  <div id="map" style="height: 400px;"></div>
+
   <div class="register-form">
     <h1>Register for School Transport</h1>
+
+    <!-- Name Input -->
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
       <input matInput [(ngModel)]="registerForm.name" required />
     </mat-form-field>
 
+    <!-- Email Input -->
     <mat-form-field appearance="fill">
       <mat-label>Email</mat-label>
       <input matInput type="email" [(ngModel)]="registerForm.email" required />
     </mat-form-field>
 
+    <!-- Phone Number Input -->
     <mat-form-field appearance="fill">
       <mat-label>Phone Number</mat-label>
       <input matInput type="tel" [(ngModel)]="registerForm.phone" required />
     </mat-form-field>
 
+    <!-- Username Input -->
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
       <input matInput [(ngModel)]="registerForm.username" required />
     </mat-form-field>
 
+    <!-- Password Input -->
     <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
       <input matInput type="password" [(ngModel)]="registerForm.password" required />
     </mat-form-field>
 
+    <!-- Confirm Password Input -->
     <mat-form-field appearance="fill">
       <mat-label>Confirm Password</mat-label>
       <input matInput type="password" [(ngModel)]="registerForm.confirmPassword" required />
     </mat-form-field>
 
+    <!-- Pickup Location Input (hidden) -->
     <mat-form-field appearance="fill">
-      <mat-label>Pickup Location</mat-label>
-      <input matInput type="text" [(ngModel)]="registerForm.pickupLocation" required />
+      <mat-label>Pickup Location (Latitude, Longitude)</mat-label>
+      <input matInput type="text" [value]="registerForm.pickupLocation.latitude + ', ' + registerForm.pickupLocation.longitude" readonly />
     </mat-form-field>
 
+    <!-- Register Button -->
     <button mat-raised-button color="primary" (click)="register()">Register</button>
 
+    <!-- Login Link -->
     <div class="login-link">
       <p>Already have an account?
         <a>
@@ -46,6 +59,7 @@
       </p>
     </div>
 
+    <!-- Error Message -->
     <div *ngIf="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
