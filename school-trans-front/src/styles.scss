@@ -2,18 +2,7 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-/*
-html, body {
-  height: 100%;
-  display: flex; 
-  justify-content: center; 
-  align-items: center;
-  margin: 0;
-}
-
-body {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: #f4f7fc; 
-}
-*/
+.success-snackbar {
+    background: #4caf50;
+    color: white;
+  }

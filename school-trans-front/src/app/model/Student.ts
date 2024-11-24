@@ -7,6 +7,7 @@ export interface Location {
     id: number;
     name: string;
     email: string;
+    phoneNumber: string,
     username: string;
     pickupLocation: Location;
     // Add other fields as necessary

@@ -1,9 +1,31 @@
-body {
-  margin: 0;
-  padding: 0;
+// map-picker.component.scss
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
 #map {
-  height: 100%;  // Ensure the map takes up full space in the container
-  width: 100%;   // Ensure the map takes up full width
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+}
+
+:host ::ng-deep {
+  .leaflet-popup-content {
+    font-size: 14px;
+    line-height: 1.4;
+    
+    strong {
+      color: #1976d2;
+    }
+  }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+  }
+
+  .leaflet-marker-icon {
+    transition: transform 0.3s ease;
+  }
 }

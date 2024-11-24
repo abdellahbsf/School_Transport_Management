@@ -1,0 +1,144 @@
+.bus-tracking-container {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .tracking-card {
+    margin-bottom: 1rem;
+  }
+
+  .map-container {
+    height: 400px;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+
+    &.on_route {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    &.delayed {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+
+    &.stopped {
+      background: #ffebee;
+      color: #c62828;
+    }
+
+    &.off_route {
+      background: #f5f5f5;
+      color: #616161;
+    }
+
+    &.unknown {
+      background: #f5f5f5;
+      color: #616161;
+    }
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: #f5f5f5;
+    border-radius: 8px;
+
+    mat-icon {
+      margin-right: 0.75rem;
+      color: #1976d2;
+    }
+
+    .info-content {
+      label {
+        display: block;
+        font-size: 0.875rem;
+        color: #666;
+        margin-bottom: 0.25rem;
+      }
+
+      p {
+        margin: 0;
+        font-weight: 500;
+        color: #2c3e50;
+      }
+    }
+  }
+
+  .stops-container {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+
+    h3 {
+      margin: 0 0 1rem;
+      color: #2c3e50;
+    }
+  }
+
+  .stops-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .stop-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+
+    &.active {
+      background: #e3f2fd;
+      border-left: 4px solid #1976d2;
+    }
+
+    .stop-marker {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #1976d2;
+      margin-right: 1rem;
+    }
+
+    .stop-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      strong {
+        color: #2c3e50;
+      }
+
+      span {
+        font-size: 0.875rem;
+        color: #666;
+      }
+    }
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+    gap: 1rem;
+  }

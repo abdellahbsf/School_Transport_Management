@@ -30,12 +30,10 @@ export class LoginComponent {
           console.log('Login successful:', response);
   
           // Save the JWT token to localStorage
-          localStorage.setItem('token', response.token);  
+          localStorage.setItem('token', response.token);
   
-          // After login, fetch all students and then find the one that matches the username
+          // Fetch students and navigate only after storing studentId
           this.fetchAllStudents(response.token);
-  
-          this.router.navigate(['/dashboard']);  // Navigate to the dashboard after successful login
         },
         (error) => {
           console.error('Login failed:', error);
@@ -44,13 +42,12 @@ export class LoginComponent {
       );
   }
   
-  // Fetch all students using the token and filter by username
   fetchAllStudents(token: string) {
     this.http.get<any[]>('http://localhost:8080/api/students', {
       headers: { Authorization: `Bearer ${token}` }
     })
     .subscribe(
-      (students: Student[]) => {  // Specify that the response will be an array of students
+      (students: Student[]) => {
         console.log('All students fetched:', students);
   
         // Find the student with the matching username
@@ -58,10 +55,15 @@ export class LoginComponent {
   
         if (loggedInStudent) {
           console.log('Found student:', loggedInStudent);
-          // Save the student ID and any other details to localStorage
-          localStorage.setItem('studentId', loggedInStudent.id.toString());  // Ensure ID is a string
+  
+          // Save the student ID to localStorage
+          localStorage.setItem('studentId', loggedInStudent.id.toString()); 
+  
+          // Navigate to the dashboard only after storing the student ID
+          this.router.navigate(['/dashboard']);
         } else {
           console.error('Student not found');
+          this.errorMessage = 'Student not found';
         }
       },
       (error) => {
@@ -69,6 +71,7 @@ export class LoginComponent {
       }
     );
   }
+  
   
 
   goToRegister() {

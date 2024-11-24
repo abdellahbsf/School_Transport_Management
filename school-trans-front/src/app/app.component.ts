@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './service/auth.service';
 
 
 
@@ -12,4 +13,5 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'school-transport-frontend';
+  constructor(private authService: AuthService) {}
 }

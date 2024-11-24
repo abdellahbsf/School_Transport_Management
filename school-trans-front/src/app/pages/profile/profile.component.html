@@ -1,0 +1,137 @@
+<div class="profile-container">
+    <mat-card class="profile-card">
+      <mat-card-header>
+        <div class="profile-header">
+          <div class="avatar-section">
+            <div class="avatar-container">
+              <img [src]="'assets/avatar-student.png'" 
+                   alt="Profile Picture"
+                   class="profile-avatar" />
+              <button mat-mini-fab color="primary" 
+                      class="change-avatar-btn"
+                      (click)="triggerFileInput()">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <input type="file" 
+                     #fileInput 
+                     hidden 
+                     accept="image/*"
+                     (change)="onFileSelected($event)">
+            </div>
+            <h2>{{ studentDetails?.name }}</h2>
+            <p class="student-id">ID: {{ studentDetails?.id }}</p>
+          </div>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div *ngIf="isLoading" class="loading-bar">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+          <div class="form-grid">
+            <!-- Personal Information Section -->
+            <div class="form-section">
+              <h3>Personal Information</h3>
+              <mat-form-field appearance="outline">
+                <mat-label>Full Name</mat-label>
+                <input matInput formControlName="name" placeholder="Enter your full name">
+                <mat-error *ngIf="profileForm.get('name')?.hasError('required')">
+                  Name is required
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" placeholder="Enter your email"
+                       type="email">
+                <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+                  Please enter a valid email address
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Phone Number</mat-label>
+                <input matInput formControlName="phone" placeholder="Enter your phone number">
+                <mat-error *ngIf="profileForm.get('phone')?.hasError('pattern')">
+                  Please enter a valid phone number
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Location Section -->
+            <div class="form-section">
+              <h3>Pickup Location</h3>
+              <div class="map-container">
+                <app-map-picker
+                  [lat]="profileForm.get('pickupLocation.latitude')?.value"
+                  [lng]="profileForm.get('pickupLocation.longitude')?.value"
+                  (locationChange)="onLocationChange($event)">
+                </app-map-picker>
+              </div>
+              <div class="location-coordinates">
+                <mat-form-field appearance="outline">
+                  <mat-label>Latitude</mat-label>
+                  <input matInput formControlName="pickupLocation.latitude" readonly>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Longitude</mat-label>
+                  <input matInput formControlName="pickupLocation.longitude" readonly>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account Settings -->
+          <div class="form-section">
+            <h3>Account Settings</h3>
+            <div class="password-fields">
+              <mat-form-field appearance="outline">
+                <mat-label>Current Password</mat-label>
+                <input matInput formControlName="currentPassword" 
+                       type="password"
+                       placeholder="Enter current password">
+                <mat-error *ngIf="profileForm.get('currentPassword')?.hasError('required')">
+                  Current password is required to make changes
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>New Password</mat-label>
+                <input matInput formControlName="newPassword" 
+                       type="password"
+                       placeholder="Enter new password">
+                <mat-error *ngIf="profileForm.get('newPassword')?.hasError('minlength')">
+                  Password must be at least 8 characters long
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Confirm New Password</mat-label>
+                <input matInput formControlName="confirmPassword" 
+                       type="password"
+                       placeholder="Confirm new password">
+                <mat-error *ngIf="profileForm.get('confirmPassword')?.hasError('passwordMismatch')">
+                  Passwords do not match
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button mat-button type="button" (click)="resetForm()">
+              Reset Changes
+            </button>
+            <button mat-raised-button color="primary" 
+                    type="submit"
+                    [disabled]="!profileForm.valid || isLoading">
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>

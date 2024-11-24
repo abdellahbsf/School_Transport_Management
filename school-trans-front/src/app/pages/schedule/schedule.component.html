@@ -1,0 +1,98 @@
+<div class="schedule-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="title-container">
+      <h1>Schedule Management</h1>
+      <p>Manage bus routes and timings</p>
+    </div>
+    <select 
+      [ngModel]="selectedView()"
+      (ngModelChange)="updateView($event)"
+      class="view-select">
+      <option value="day">Day View</option>
+      <option value="week">Week View</option>
+      <option value="month">Month View</option>
+    </select>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="schedule-grid">
+    <!-- Active Routes Card -->
+    <div class="schedule-card">
+      <div class="card-header">
+        <h2>
+          <i class="material-icons">directions_bus</i>
+          Active Routes
+        </h2>
+        <p>Currently active bus routes and schedules</p>
+      </div>
+      <div class="card-content">
+        <div class="route-list">
+          @for (schedule of schedules(); track schedule.id) {
+            <div class="route-item">
+              <div class="route-header">
+                <h3>{{ schedule.routeName }}</h3>
+                <span [class]="getStatusClass(schedule.status)">
+                  {{ schedule.status }}
+                </span>
+              </div>
+              <div class="route-details">
+                <div class="time-info">
+                  <i class="material-icons">schedule</i>
+                  {{ schedule.startTime }} - {{ schedule.endTime }}
+                </div>
+                <div class="bus-id">
+                  Bus ID: {{ schedule.busId }}
+                </div>
+                <div class="days-list">
+                  @for (day of schedule.daysActive; track day) {
+                    <span class="day-badge">{{ day }}</span>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Schedule Card -->
+    <div class="schedule-card">
+      <div class="card-header">
+        <h2>
+          <i class="material-icons">calendar_today</i>
+          Weekly Schedule
+        </h2>
+        <p>Overview of all routes by day and time</p>
+      </div>
+      <div class="schedule-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Time</th>
+              @for (day of daysOfWeek; track day) {
+                <th>{{ day }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (time of timeSlots; track time) {
+              <tr>
+                <td>{{ time }}</td>
+                @for (day of daysOfWeek; track day) {
+                  <td>
+                    @if (hasActiveRoute(day, time)) {
+                      <span class="route-active-indicator">
+                        Route Active
+                      </span>
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

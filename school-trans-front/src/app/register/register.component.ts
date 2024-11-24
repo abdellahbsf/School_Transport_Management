@@ -1,20 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
-import { Platform } from '@angular/cdk/platform';
+import { FormsModule } from '@angular/forms';  // Import FormsModule
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, FormsModule],
+  imports: [NgFor, NgIf, CommonModule, MatFormFieldModule, MatInputModule, FormsModule],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrl: './register.component.scss'
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   registerForm = {
     name: '',
     email: '',
@@ -28,61 +27,10 @@ export class RegisterComponent implements OnInit {
     }
   };
 
-  map: any;
-  marker: any;
-
   errorMessage: string = '';
 
-  constructor(private http: HttpClient, private router: Router, private platform: Platform) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
-  ngOnInit(): void {
-    // Ensure the code only runs on the client-side
-    if (this.platform.isBrowser) {
-      // Dynamically import Leaflet and its CSS
-      import('leaflet').then((L: any) => {
-        this.initializeMap(L);
-      }).catch((error: any) => {
-        console.error('Error loading Leaflet:', error);
-      });
-    }
-  }
-
-  // Initialize the map and set pickup location on click
-  initializeMap(L: any) {
-    this.map = L.map('map', {
-      center: L.latLng(49.2125578, 16.62662018), // Default coordinates
-      zoom: 14,
-    });
-
-    // Map tile layer
-    const key = 'HTEtNsiaPnMqHOWEbLNC';  // Replace with your MapTiler API key
-    L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=${key}`,{ //style URL
-      tileSize: 512,
-      zoomOffset: -1,
-      minZoom: 1,
-      attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-      crossOrigin: true
-    }).addTo(this.map);
-
-    // Handle map click to set pickup location
-    this.map.on('click', (e: any) => {
-      const lat = e.latlng.lat;
-      const lng = e.latlng.lng;
-
-      // Set marker at clicked position
-      if (this.marker) {
-        this.marker.setLatLng(e.latlng);
-      } else {
-        this.marker = L.marker(e.latlng).addTo(this.map);
-      }
-
-      // Update the form with the selected latitude and longitude
-      this.registerForm.pickupLocation.latitude = lat;
-      this.registerForm.pickupLocation.longitude = lng;
-    });
-  }
-
-  // Register the user
   register() {
     if (this.registerForm.password !== this.registerForm.confirmPassword) {
       this.errorMessage = 'Passwords do not match';
@@ -90,13 +38,16 @@ export class RegisterComponent implements OnInit {
     }
 
     const user = {
+      name: this.registerForm.name,
       username: this.registerForm.username,
       email: this.registerForm.email,
+      phoneNumber: this.registerForm.phone,
       password: this.registerForm.password,
+      role: 'ROLE_STUDENT',  // Add default role here
       pickupLocation: this.registerForm.pickupLocation
     };
 
-    this.http.post('http://localhost:8080/api/auth/register', user)
+    this.http.post('http://localhost:8080/api/students', user)
       .subscribe(
         (response) => {
           console.log('Registration successful:', response);
@@ -104,12 +55,11 @@ export class RegisterComponent implements OnInit {
         },
         (error) => {
           console.error('Registration failed:', error);
-          this.errorMessage = error.error.error || 'Registration failed. Please try again.';
+          this.errorMessage = error?.error?.message || 'Registration failed. Please try again.';
         }
       );
   }
 
-  // Navigate to login page
   goTologin() {
     this.router.navigate(['/login']);
   }

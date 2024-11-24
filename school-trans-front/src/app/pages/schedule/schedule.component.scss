@@ -1,0 +1,228 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.schedule-container {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .title-container {
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    p {
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .view-select {
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    background-color: white;
+    cursor: pointer;
+
+    &:hover {
+      border-color: #d1d5db;
+    }
+
+    &:focus {
+      outline: none;
+      ring: 2px;
+      ring-color: #3b82f6;
+    }
+  }
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.schedule-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+  .card-header {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+
+    h2 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+
+    .material-icons {
+      color: #3b82f6;
+    }
+  }
+
+  .card-content {
+    padding: 1rem;
+  }
+}
+
+.route-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.route-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  transition: all 0.2s;
+
+  &:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-color: #d1d5db;
+  }
+
+  .route-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      font-weight: 600;
+      color: #1f2937;
+    }
+  }
+
+  .route-details {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+
+    .time-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .bus-id {
+      margin-top: 0.25rem;
+    }
+
+    .days-list {
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+  }
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  &.active {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+
+  &.inactive {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+}
+
+.day-badge {
+  padding: 0.25rem 0.75rem;
+  background-color: #dbeafe;
+  color: #1e40af;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
+
+.schedule-table-container {
+  padding: 1rem;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 0.5rem;
+      border: 1px solid #e5e7eb;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f9fafb;
+      color: #4b5563;
+      font-weight: 500;
+      font-size: 0.875rem;
+
+      &:first-child {
+        text-align: left;
+      }
+    }
+
+    td {
+      color: #4b5563;
+      font-size: 0.875rem;
+
+      &:first-child {
+        font-weight: 500;
+        text-align: left;
+      }
+    }
+  }
+
+  .route-active-indicator {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background-color: #dbeafe;
+    color: #1e40af;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+
+    .view-select {
+      width: 100%;
+    }
+  }
+}

@@ -1,89 +1,201 @@
-<!-- Header / Navigation Bar -->
-<header class="navbar">
+<!-- Header -->
+<header class="header">
   <div class="logo">
-    <h2>School Transport Management</h2>  <!-- Add logo here -->
+    <mat-icon>directions_bus</mat-icon>
+    <h2>School Transport Management</h2>
   </div>
+  
   <nav class="nav-links">
-    <a routerLink="/home">Home</a>
-    <a routerLink="/profile">Profile</a>
-    <a routerLink="/routes">Routes</a>
-    <a routerLink="/notifications">Notifications</a>
-    <a routerLink="/settings">Settings</a>
+    <a routerLink="/home" routerLinkActive="active">
+      <mat-icon>home</mat-icon>
+      <span>Home</span>
+    </a>
+    <a routerLink="/profile" routerLinkActive="active">
+      <mat-icon>person</mat-icon>
+      <span>Profile</span>
+    </a>
+    <a routerLink="/routes" routerLinkActive="active">
+      <mat-icon>map</mat-icon>
+      <span>Routes</span>
+    </a>
+    <!-- Add Schedule Link -->
+    <a routerLink="/schedule" routerLinkActive="active">
+      <mat-icon>calendar_today</mat-icon>
+      <span>Schedule</span>
+    </a>
+    <a routerLink="/notifications" routerLinkActive="active">
+      <mat-icon [matBadge]="unreadNotifications.length" matBadgeColor="warn">
+        notifications
+      </mat-icon>
+      <span>Notifications</span>
+    </a>
+    <a routerLink="/settings" routerLinkActive="active">
+      <mat-icon>settings</mat-icon>
+      <span>Settings</span>
+    </a>
   </nav>
+
   <div class="user-menu">
-    <img class="avatar" [src]="'assets/avatar-student.png'" alt="User Avatar" />
-    <span>{{ studentDetails?.name }}</span>
-    <button (click)="logout()">Logout</button>
+    <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+      <img [src]="'assets/avatar-student.png'" 
+           alt="User Avatar" 
+           class="avatar" />
+      <span>{{ studentDetails?.name }}</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="editProfile()">
+        <mat-icon>edit</mat-icon>
+        <span>Edit Profile</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
   </div>
 </header>
 
-<!-- Main Content Area -->
-<div class="dashboard-content">
-
-  <!-- Dashboard Sections -->
-  <main class="main-sections">
-    <!-- Welcome Section -->
+<!-- Main Content -->
+<div class="dashboard-container">
+  <div class="dashboard-grid">
+    <!-- Welcome & Stats Section -->
     <section class="welcome-section">
-      <h3>Welcome, {{ studentDetails?.name }}!</h3>
-      <div class="quick-stats">
+      <h2>Welcome back, {{ studentDetails?.name }}!</h2>
+      <div class="stats-grid">
         <div class="stat-card">
-          <div class="value">42</div>
-          <div class="label">Trips Completed</div>
+          <mat-icon color="primary">check_circle</mat-icon>
+          <div class="stat-content">
+            <div class="stat-value">{{ stats.completedTrips }}</div>
+            <div class="stat-label">Completed Trips</div>
+          </div>
         </div>
-    
         <div class="stat-card">
-          <div class="value">15</div>
-          <div class="label">Upcoming Trips</div>
+          <mat-icon color="accent">upcoming</mat-icon>
+          <div class="stat-content">
+            <div class="stat-value">{{ stats.upcomingTrips }}</div>
+            <div class="stat-label">Upcoming Trips</div>
+          </div>
         </div>
-    
         <div class="stat-card">
-          <div class="value">5</div>
-          <div class="label">Notifications</div>
+          <mat-icon [color]="unreadNotifications.length ? 'warn' : 'primary'">
+            notifications
+          </mat-icon>
+          <div class="stat-content">
+            <div class="stat-value">{{ unreadNotifications.length }}</div>
+            <div class="stat-label">New Notifications</div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Profile Summary -->
-    <section class="profile-summary">
-      <div>
-        <h3>Profile Summary</h3>
-      <p><strong>Name:</strong> {{ studentDetails?.name }}</p>
-      <p><strong>Email:</strong> {{ studentDetails?.email }}</p>
-      <p><strong>Pickup Location:</strong> {{ studentDetails?.pickupLocation }}</p>
-      <button (click)="editProfile()">Edit Profile</button>
+    <section class="profile-card">
+      <div class="profile-header">
+        <h3>Profile Information</h3>
+        <button mat-icon-button (click)="editProfile()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+      <div class="profile-content">
+        <div class="profile-item">
+          <mat-icon>person</mat-icon>
+          <div>
+            <label>Name</label>
+            <p>{{ studentDetails?.name }}</p>
+          </div>
+        </div>
+        <div class="profile-item">
+          <mat-icon>email</mat-icon>
+          <div>
+            <label>Email</label>
+            <p>{{ studentDetails?.email }}</p>
+          </div>
+        </div>
+        <div class="profile-item">
+          <mat-icon>phone</mat-icon>
+          <div>
+            <label>Phone</label>
+            <p>{{ studentDetails?.phoneNumber }}</p>
+          </div>
+        </div>
+        <div class="profile-item">
+          <mat-icon>location_on</mat-icon>
+          <div>
+            <label>Pickup Location</label>
+            <p>{{ formatLocation(studentDetails?.pickupLocation) }}</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Bus Route Info -->
-    <section class="bus-route-info">
-      <h3>Bus Route Information</h3>
+    <!-- Bus Route Map -->
+    <section class="map-section">
+      <h3>Current Bus Route</h3>
       <div class="map-container">
         <app-map-picker
           [lat]="studentLocation.lat"
-          [lng]="studentLocation.lng">
+          [lng]="studentLocation.lng"
+          [isInteractive]="true">
         </app-map-picker>
       </div>
-      <button (click)="trackBus()">Track Bus in Real-Time</button>
+      <button mat-raised-button color="primary" (click)="trackBus()">
+        <mat-icon>gps_fixed</mat-icon>
+        Track Bus Location
+      </button>
     </section>
 
-    <!-- Notifications -->
-    <section class="notifications">
-      <h3>Recent Notifications</h3>
-      <!--<ul>
-        <li *ngFor="let notification of notifications">
-          {{ notification }}
-        </li>
-      </ul>-->
-      <button (click)="viewAllNotifications()">View All Notifications</button>
+    <!-- Recent Notifications -->
+    <section class="notifications-section">
+      <div class="section-header">
+        <h3>Recent Notifications</h3>
+        <button mat-button color="primary" (click)="viewAllNotifications()">
+          View All
+        </button>
+      </div>
+      <div class="notifications-list">
+        @for (notification of recentNotifications; track notification.id) {
+          <div class="notification-item" [class.unread]="!notification.isRead">
+            <mat-icon [color]="getNotificationColor(notification)">
+              {{ getNotificationIcon(notification) }}
+            </mat-icon>
+            <div class="notification-content">
+              <p>{{ notification.message }}</p>
+              <span class="notification-time">
+                {{ notification.timestamp | date:'shortTime' }}
+              </span>
+            </div>
+          </div>
+        }
+      </div>
     </section>
 
     <!-- Upcoming Trips -->
-    <section class="upcoming-trips">
-      <h3>Upcoming Trips</h3>
-      <p><strong>Next Scheduled Ride:</strong></p>
-      <!--<p><strong>Date & Time:</strong> {{ upcomingTrip.dateTime }}</p>-->
-      <!--<p><strong>Pickup Point:</strong> {{ upcomingTrip.pickupPoint }}</p>-->
-      <button (click)="viewFullSchedule()">View Full Schedule</button>
+    <section class="trips-section">
+      <div class="section-header">
+        <h3>Upcoming Trips</h3>
+        <button mat-button color="primary" (click)="viewFullSchedule()">
+          Full Schedule
+        </button>
+      </div>
+      <div class="trips-list">
+        @for (trip of upcomingTrips; track trip.id) {
+          <div class="trip-item">
+            <div class="trip-status" [class]="trip.status">
+              {{ trip.status }}
+            </div>
+            <div class="trip-details">
+              <div class="trip-date">
+                {{ trip.date | date:'mediumDate' }}
+              </div>
+              <div class="trip-times">
+                <span>Pickup: {{ trip.pickupTime }}</span>
+                <span>Dropoff: {{ trip.dropoffTime }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
     </section>
-  </main>
+  </div>
 </div>

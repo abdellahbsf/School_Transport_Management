@@ -1,0 +1,82 @@
+<div class="bus-tracking-container">
+    <mat-card class="tracking-card">
+      <mat-card-header>
+        <mat-card-title>Live Bus Tracking</mat-card-title>
+        <mat-card-subtitle>
+          Status: 
+          <span [class]="'status-badge ' + (currentLocation?.status?.toLowerCase() || 'unknown')">
+            {{ currentLocation?.status || 'Unknown' }}
+          </span>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Map Section -->
+        <div class="map-container">
+          <app-map-picker
+            [lat]="currentLocation?.latitude || defaultLat"
+            [lng]="currentLocation?.longitude || defaultLng"
+            [isInteractive]="false"
+            [routeStops]="routeStops"
+            [busLocation]="currentLocation">
+          </app-map-picker>
+        </div>
+
+        <!-- Status Information -->
+        <div class="status-container">
+          <div class="info-grid">
+            <div class="info-item">
+              <mat-icon>speed</mat-icon>
+              <div class="info-content">
+                <label>Current Speed</label>
+                <p>{{ currentLocation?.speed || 0 }} km/h</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon>schedule</mat-icon>
+              <div class="info-content">
+                <label>ETA to Your Stop</label>
+                <p>{{ formatETA(currentLocation?.estimatedArrival) }}</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon>update</mat-icon>
+              <div class="info-content">
+                <label>Last Updated</label>
+                <p>{{ formatLastUpdate(currentLocation?.lastUpdate) }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Next Stops -->
+          <div class="stops-container">
+            <h3>Route Stops</h3>
+            <div class="stops-list">
+              <div *ngFor="let stop of routeStops" 
+                   class="stop-item"
+                   [class.active]="isNextStop(stop)">
+                <div class="stop-marker"></div>
+                <div class="stop-content">
+                  <strong>{{ stop.name }}</strong>
+                  <span>ETA: {{ formatETA(stop.estimatedArrival) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="centerOnBus()">
+          <mat-icon>center_focus_strong</mat-icon>
+          Center on Bus
+        </button>
+        <button mat-button color="primary" (click)="centerOnMyStop()">
+          <mat-icon>place</mat-icon>
+          Center on My Stop
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
